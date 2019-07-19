@@ -27,7 +27,7 @@ elif not len(list(args.s.lower())) >= 22:
     exit(1)
     
 try:
-    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", int(args.tp))
+    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS4, "127.0.0.1", int(args.tp))
 except e as Exception:
     print "Error: Tor port is not an integer."
     exit(1)
